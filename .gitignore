@@ -1,0 +1,49 @@
+# C++ build
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+.venv/
+venv/
+*.egg
+
+# Data
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Output
+output/
+reports/
+
+# FlatBuffers generated
+include/flatbuffers/generated/
+
+# Compiled binaries
+reconcilex
+recon_cli
+
+# Compiled
+*.o
+*.a
+*.so
+*.dylib
+reconcilex

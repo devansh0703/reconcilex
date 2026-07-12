@@ -1,0 +1,29 @@
+database:
+  path: data/reconcilex.db
+
+matching:
+  price_tolerance: 0.01
+  qty_tolerance: 1
+  auto_resolve: true
+
+sla:
+  resolution_hours: 24
+  escalation_hours: 48
+  aging_buckets:
+    - "0-1d"
+    - "1-3d"
+    - "3-7d"
+    - "7d+"
+
+settlement:
+  t_plus: 2
+  fail_threshold_hours: 48
+
+reporting:
+  template_dir: templates
+  output_dir: output
+
+scheduler:
+  match_cron: "0 18 * * 1-5"
+  report_cron: "0 20 * * 1-5"
+  settlement_check_cron: "0 9 * * 1-5"

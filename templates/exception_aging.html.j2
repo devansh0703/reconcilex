@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exception Aging Report</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 20px; }
+        .header h1 { font-size: 28px; }
+        .aging-chart { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+        .aging-bar { flex: 1; min-width: 140px; padding: 20px; border-radius: 10px; text-align: center; color: white; }
+        .aging-bar .count { font-size: 36px; font-weight: 700; }
+        .aging-bar .label { font-size: 14px; margin-top: 4px; opacity: 0.9; }
+        .bucket-0 { background: linear-gradient(135deg, #4caf50, #66bb6a); }
+        .bucket-1 { background: linear-gradient(135deg, #ff9800, #ffa726); }
+        .bucket-2 { background: linear-gradient(135deg, #f44336, #ef5350); }
+        .bucket-3 { background: linear-gradient(135deg, #9c27b0, #ab47bc); }
+        .section { background: white; border-radius: 10px; padding: 24px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section h2 { color: #1a237e; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #1a237e; color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+        td { padding: 8px 14px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover { background: #f8f9fa; }
+        .sev-low { color: #4caf50; font-weight: 600; }
+        .sev-medium { color: #ff9800; font-weight: 600; }
+        .sev-high { color: #f44336; font-weight: 600; }
+        .sev-critical { color: #9c27b0; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Exception Aging Report</h1>
+        </div>
+
+        <div class="aging-chart">
+            {% for bucket, count in aging.items() %}
+            <div class="aging-bar bucket-{{ loop.index0 % 4 }}">
+                <div class="count">{{ count }}</div>
+                <div class="label">{{ bucket }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if exceptions %}
+        <div class="section">
+            <h2>Open Exceptions ({{ exceptions|length }})</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Trade ID</th>
+                        <th>Symbol</th>
+                        <th>State</th>
+                        <th>Severity</th>
+                        <th>Assignee</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ex in exceptions %}
+                    <tr>
+                        <td>{{ ex.id }}</td>
+                        <td>{{ ex.internal_trade_id }}</td>
+                        <td>{{ ex.symbol }}</td>
+                        <td>{{ ex.state }}</td>
+                        <td class="sev-{{ ex.severity | lower }}">{{ ex.severity }}</td>
+                        <td>{{ ex.assignee or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

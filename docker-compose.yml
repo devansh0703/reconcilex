@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  reconcilex:
+    build: .
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+      - ./config:/app/config
+    environment:
+      - RECONX_DB_PATH=/app/data/reconcilex.db
+    command: >
+      sh -c "python3 scripts/seed_data.py && python3 -m recon.cli match && python3 -m recon.cli dashboard --host 0.0.0.0"
+
+  seed-data:
+    build: .
+    volumes:
+      - ./data:/app/data
+    command: python3 scripts/seed_data.py
+    profiles:
+      - tools

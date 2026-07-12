@@ -1,0 +1,32 @@
+venues:
+  NYSE:
+    name: New York Stock Exchange
+    fix_sender: "TRC_NYSE"
+    fix_target: "NYSE_FIX"
+    fix_endpoint: "tcp://nyse-fix.tower-research.com:9876"
+    settlement_t_plus: 2
+    enabled: true
+
+  NASDAQ:
+    name: NASDAQ
+    fix_sender: "TRC_NASDAQ"
+    fix_target: "NASDAQ_FIX"
+    fix_endpoint: "tcp://nasdaq-fix.tower-research.com:9877"
+    settlement_t_plus: 2
+    enabled: true
+
+  CBOE:
+    name: Cboe BZX
+    fix_sender: "TRC_CBOE"
+    fix_target: "CBOE_FIX"
+    fix_endpoint: "tcp://cboe-fix.tower-research.com:9878"
+    settlement_t_plus: 2
+    enabled: false
+
+  ARCA:
+    name: NYSE Arca
+    fix_sender: "TRC_ARCA"
+    fix_target: "ARCA_FIX"
+    fix_endpoint: "tcp://arca-fix.tower-research.com:9879"
+    settlement_t_plus: 2
+    enabled: false

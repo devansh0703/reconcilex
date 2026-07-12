@@ -1,0 +1,50 @@
+name: ReconcileX CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  cpp-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ libsqlite3-dev
+
+      - name: Build
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . -j$(nproc)
+
+      - name: Run C++ tests
+        run: |
+          cd build
+          ctest --output-on-failure -j$(nproc)
+
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]" 2>/dev/null || pip install click pyyaml jinja2 rich pytest pytest-asyncio
+
+      - name: Generate sample data
+        run: python scripts/seed_data.py
+
+      - name: Run Python tests
+        run: pytest python/tests/ -v

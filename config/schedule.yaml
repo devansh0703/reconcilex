@@ -1,0 +1,37 @@
+schedules:
+  daily_match:
+    description: "Run daily reconciliation matching"
+    cron: "0 18 * * 1-5"
+    timeout_minutes: 30
+    enabled: true
+
+  daily_report:
+    description: "Generate daily reconciliation report"
+    cron: "0 20 * * 1-5"
+    depends_on: daily_match
+    timeout_minutes: 15
+    enabled: true
+
+  settlement_check:
+    description: "Check for settlement failures"
+    cron: "0 9 * * 1-5"
+    timeout_minutes: 10
+    enabled: true
+
+  exception_aging:
+    description: "Generate exception aging report"
+    cron: "0 19 * * 1-5"
+    timeout_minutes: 10
+    enabled: true
+
+  weekly_summary:
+    description: "Weekly reconciliation summary"
+    cron: "0 8 * * 6"
+    timeout_minutes: 30
+    enabled: true
+
+notifications:
+  slack_webhook: ""
+  email_recipients: []
+  on_critical_exception: true
+  on_settlement_failure: true
